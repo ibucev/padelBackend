@@ -1,0 +1,35 @@
+POST http://localhost:8088/api/v1/auth/register
+Content-Type: application/json
+
+{
+    "firstname": "",
+    "lastname" : "Joe",
+    "email": "",
+    "password": "test156132158"
+} 
+
+###
+
+GET http://localhost:8088/api/v1/auth/activate-account?token=264185
+
+
+###
+
+POST http://localhost:8088/api/v1/auth/authenticate
+Content-Type: application/json
+
+{
+    "email": "doe@net.hr",
+    "password": "test156132158"
+}
+
+####
+
+GET http://localhost:8088/api/v1/players
+Content-Type: application/json
+
+### Create a pair
+POST http://localhost:8088/api/v1/pairs?player1Id=17&player2Id=24
+
+###
+DELETE http://localhost:8088/api/v1/players/21
