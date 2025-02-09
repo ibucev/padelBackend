@@ -45,7 +45,8 @@ public class SecurityConfig {
                 "/players",
                 "/players/**",
                 "/pairs",
-                "/pairs/**").permitAll().anyRequest().authenticated())
+                "/pairs/**",
+                "/matches").permitAll().anyRequest().authenticated())
                 
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider)
