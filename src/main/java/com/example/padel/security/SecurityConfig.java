@@ -41,12 +41,13 @@ public class SecurityConfig {
                 "/v3/api-docs/**",
                 "/v3/api-docs",
                 "/api/v1/v3/api-docs",
-                "/swagger-resources",
+                "/swagger-resources").permitAll()
+                .requestMatchers(
                 "/players",
                 "/players/**",
                 "/pairs",
                 "/pairs/**",
-                "/matches").permitAll().anyRequest().authenticated())
+                "/matches").authenticated().anyRequest().authenticated())
                 
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider)

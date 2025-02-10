@@ -2,6 +2,8 @@ package com.example.padel.security;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +25,8 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsServiceImpl userDetailsService;
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
+
 
     @Override
     protected void doFilterInternal(
@@ -30,10 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
         @NonNull HttpServletResponse response,
         @NonNull FilterChain filterChain
         ) throws ServletException, IOException {
-            if(request.getServletPath().contains("/api/vi/auth")) {
-                filterChain.doFilter(request, response);
-                return;
-            }
+            logger.debug("Inside doFilterInternal method " + request.getServletPath().toString());
             final String authHeader = request.getHeader("Authorization");
             final String jwt;
             final String userEmail;
@@ -51,9 +52,11 @@ public class JwtFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        logger.debug("Extracted Token: {}", authToken);
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
+
             filterChain.doFilter(request, response);
         }
 }
