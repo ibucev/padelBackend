@@ -29,8 +29,20 @@ public class MatchService {
     private final PairRepository pairRepository;
     private final SetResultRepository setResultRepository;
 
+    // The getAllMatchesForPlayer takes id of the player and gets only matches of that player
+    public List<MatchDTO> getAllMatchesForPlayer(Long playerId) {
+        List<Object[]> setResults = matchRepository.getMatchesWithSets(playerId);
+        return createMatchData(setResults);
+    }
+
+    // The getAllMatches have null value for player id and it will get all matches of all players
+    // Query in matchRepositry handles this null value
     public List<MatchDTO> getAllMatches() {
-        List<Object[]> setResults = matchRepository.getMatchesWithSets();
+        List<Object[]> setResults = matchRepository.getMatchesWithSets(null);
+        return createMatchData(setResults);
+    }
+
+    public List<MatchDTO> createMatchData(List<Object[]> setResults) {
         Map<Integer, MatchDTO> matchMap = new HashMap<>();
 
         for (Object[] row : setResults) {

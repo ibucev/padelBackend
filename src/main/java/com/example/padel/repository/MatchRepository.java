@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.padel.model.Match;
@@ -28,7 +29,8 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
             "JOIN players p2 ON first_pair.player2_id = p2.id " +
             "JOIN players p3 ON second_pair.player1_id = p3.id " +
             "JOIN players p4 ON second_pair.player2_id = p4.id " +
-            "JOIN set_result s ON m.id = s.match_id", nativeQuery = true)
-    List<Object[]> getMatchesWithSets();
-
+            "JOIN set_result s ON m.id = s.match_id " +
+            "WHERE (:playerId IS NULL OR p1.id = :playerId OR p2.id = :playerId OR p3.id = :playerId OR p4.id = :playerId)", 
+            nativeQuery = true)
+    List<Object[]> getMatchesWithSets(@Param("playerId") Long playerId);   
 }
