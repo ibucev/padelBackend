@@ -34,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
         @NonNull HttpServletResponse response,
         @NonNull FilterChain filterChain
         ) throws ServletException, IOException {
-            logger.debug("Inside doFilterInternal method " + request.getServletPath().toString());
+            logger.debug("Inside doFilterInternal method with path {}", request.getServletPath().toString());
             final String authHeader = request.getHeader("Authorization");
             final String jwt;
             final String userEmail;

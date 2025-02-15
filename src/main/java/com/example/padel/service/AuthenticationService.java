@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,11 +40,13 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
     private final EmailService emailService;
 
+    private final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
+
     @Value("${application.mailing.frontend.activation-url}")
     private String activationUrl; 
 
     public void register(RegistrationRequest request) throws MessagingException {
-        System.out.println("Registering player with email: " + request.getEmail());
+        logger.info("Registering player with email: {}", request.getEmail());
         var playerRole = roleRepository.findByName("PLAYER")
             .orElseThrow(() -> new IllegalStateException("Role not found"));
         var player = Player.builder()
@@ -96,6 +100,7 @@ public class AuthenticationService {
     }               
         
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        logger.info("Authenticating player with email: {}", request.getEmail());
         var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         var claims = new HashMap<String, Object>();
         var user = (Player) auth.getPrincipal();
@@ -118,7 +123,7 @@ public class AuthenticationService {
         }
 
         var player = playerRepository.findByEmail(savedToken.getPlayer().getEmail())
-            .orElseThrow(() -> new UsernameNotFoundException("Player not found"));
+            .orElseThrow(() -> new UsernameNotFoundException(String.format("Player with email %s not found", savedToken.getPlayer().getEmail())));
 
         player.setEnabled(true);
         playerRepository.save(player);    
