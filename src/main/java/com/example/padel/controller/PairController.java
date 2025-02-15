@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.padel.model.Pair;
+import com.example.padel.dto.PairDTO;
 import com.example.padel.service.PairService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,13 +21,12 @@ public class PairController {
     private final PairService pairService;
 
     @PostMapping
-    public Pair createPair(@RequestParam Long player1Id, @RequestParam Long player2Id) {
+    public PairDTO createPair(@RequestParam Long player1Id, @RequestParam Long player2Id) {
         return pairService.createPair(player1Id, player2Id);
     }
 
     @GetMapping
-    public List<Pair> getAllPairs() {
+    public List<PairDTO> getAllPairs() {
         return pairService.getPairs();
     }
-
 }

@@ -44,5 +44,9 @@ public class Match {
     @OneToMany(mappedBy = "match", cascade = CascadeType.ALL)
     private List<SetResult> setResults = new ArrayList<SetResult>();
 
+    @ManyToOne
+    @JoinColumn(name = "league_id", referencedColumnName = "id")
+    private League league;
+
     private LocalDateTime matchDate;
 }

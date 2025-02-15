@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.padel.dto.MatchDTO;
-import com.example.padel.model.Match;
 import com.example.padel.service.MatchService;
 
 import lombok.RequiredArgsConstructor;
@@ -33,7 +32,7 @@ public class MatchController {
     }
 
     @PostMapping
-    public Match createMatch(@RequestBody MatchRequest matchRequest) {
+    public MatchDTO createMatch(@RequestBody MatchRequest matchRequest) {
         return matchService.createMatch(matchRequest.getFirstPair(), 
             matchRequest.getSecondPair(),
             matchRequest.getSetResults());

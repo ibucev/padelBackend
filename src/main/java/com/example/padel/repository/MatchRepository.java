@@ -30,7 +30,8 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
             "JOIN players p3 ON second_pair.player1_id = p3.id " +
             "JOIN players p4 ON second_pair.player2_id = p4.id " +
             "JOIN set_result s ON m.id = s.match_id " +
-            "WHERE (:playerId IS NULL OR p1.id = :playerId OR p2.id = :playerId OR p3.id = :playerId OR p4.id = :playerId)", 
+            "WHERE (:playerId IS NULL OR p1.id = :playerId OR p2.id = :playerId OR p3.id = :playerId OR p4.id = :playerId)" +
+            "ORDER BY m.id ASC", 
             nativeQuery = true)
     List<Object[]> getMatchesWithSets(@Param("playerId") Long playerId);   
 }

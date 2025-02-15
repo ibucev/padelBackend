@@ -7,49 +7,46 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.persistence.Table;
 
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "pairs")
+@Table(name = "league")
 @EntityListeners(AuditingEntityListener.class)
-public class Pair {
+public class League {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "player1_id", referencedColumnName = "id")
-    private Player player1;
+    
+    @ManyToMany
+    @JoinTable(name = "league_pairs",
+     joinColumns = @JoinColumn(name = "league_id"),
+     inverseJoinColumns = @JoinColumn(name = "pair_id"))
+    private List<Pair> pairs = new ArrayList<>();
+ 
+    @OneToMany(mappedBy = "league", cascade = CascadeType.PERSIST)
+    private List<Match> matches = new ArrayList<Match>();
 
-    @ManyToOne
-    @JoinColumn(name = "player2_id", referencedColumnName = "id")
-    private Player player2;
-
-    @ManyToMany(mappedBy = "pairs")
-    private List<League> leagues = new ArrayList<>();
-
-    private boolean active;
     @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime creationDate;
+    private LocalDateTime leagueCreated;
+    private Integer leagueDuration;
 }
-

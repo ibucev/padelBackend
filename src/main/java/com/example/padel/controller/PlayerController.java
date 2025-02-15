@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+import com.example.padel.dto.PlayerDTO;
 import com.example.padel.model.Player;
 import com.example.padel.service.PlayerService;
 
@@ -26,7 +27,7 @@ public class PlayerController {
     private final PlayerService playerService;
 
     @GetMapping()
-    public List<Player> getAllPlayers() {
+    public List<PlayerDTO> getAllPlayers() {
         return playerService.getAllPlayers();
     }
 
@@ -42,7 +43,7 @@ public class PlayerController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Player> editPlayer(@PathVariable Long id, @RequestBody Player playerInfo) {
+    public ResponseEntity<PlayerDTO> editPlayer(@PathVariable Long id, @RequestBody Player playerInfo) {
         return ResponseEntity.ok(playerService.editPlayer(id, playerInfo));
     }
 }
