@@ -3,12 +3,14 @@ package com.example.padel.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.example.padel.dto.LeagueDTO;
+import com.example.padel.dto.MatchDTO;
 import com.example.padel.dtomapper.Mapper;
 import com.example.padel.model.League;
 import com.example.padel.model.Match;
@@ -71,5 +73,11 @@ public class LeagueService {
             }
         }
         return allMatchesInLeague;
+    }
+
+    public List<MatchDTO> getallMatchesInLeague(Long leagueId) {
+        return matchRepository.getMatchesByLeagueId(leagueId).stream()
+            .map(leagueDtoMapper::convertToMatchDTO)
+            .collect(Collectors.toList());
     }
 }
