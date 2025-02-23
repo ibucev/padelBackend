@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/players")
-@Tag(name = "Players")
+@Tag(name = "Players", description = "Players API")
 public class PlayerController {
     
     private final PlayerService playerService;

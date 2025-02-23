@@ -1,4 +1,4 @@
-package com.example.padel.controller;
+package com.example.padel.dto;
 
 import java.util.List;
 
